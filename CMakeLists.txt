@@ -161,7 +161,7 @@ set(CONFIG_BOOTLOADER_SIZE ${CONFIG_BOOT_FLASH_SIZE})
 
 set(BUILD_SHARED_LIBS OFF)
 
-project(core C CXX ASM)
+project(${CSDK_PRO} C CXX ASM)
 
 
 #/*+\NEW\chenzhimin\2020.07.8\ add elua*/
