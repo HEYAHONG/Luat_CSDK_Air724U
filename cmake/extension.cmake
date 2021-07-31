@@ -84,7 +84,7 @@ endfunction()
 macro(target_add_revision target)
     set(revision_file ${CMAKE_CURRENT_BINARY_DIR}/${target}_revision.c)
     set(revision_variable ${target}_build_revision)
-    set(revision_value ${BUILD_TARGET}-${BUILD_RELEASE_TYPE}-${BUILD_AUTO_REVISION})
+    set(revision_value ${CSDK_PRO}-${BUILD_RELEASE_TYPE}-${BUILD_AUTO_REVISION})
     configure_file(${SOURCE_TOP_DIR}/cmake/auto_revision.c.in ${revision_file})
     target_sources(${target} PRIVATE ${revision_file})
 endmacro()
@@ -248,7 +248,7 @@ endfunction()
 macro(pac_init_fdl cmd)
     if(CONFIG_SOC_8910)
         set(${cmd}
-            cfg-init --pname "UIX8910_MODEM" --palias ${BUILD_TARGET}
+            cfg-init --pname "UIX8910_MODEM" --palias ${CSDK_PRO}
                 --pversion "8910 MODULE" --version "BP_R1.0.0"
                 --flashtype 1
             #/*+\BUG\chenxudong\2020.9.25\add secure boot enable*/
@@ -261,7 +261,7 @@ macro(pac_init_fdl cmd)
     endif()
     if(CONFIG_SOC_8811)
         set(${cmd}
-            cfg-init --pname "8811_MODEM" --palias ${BUILD_TARGET}
+            cfg-init --pname "8811_MODEM" --palias ${CSDK_PRO}
                 --pversion "8811 MODULE" --version "BP_R1.0.0"
                 --flashtype 0
             cfg-fdl -a ${CONFIG_NORFDL_IMAGE_START} -s ${CONFIG_NORFDL_IMAGE_SIZE}
@@ -320,10 +320,10 @@ function(add_unittest target)
     if ((CONFIG_SOC_8955) OR (CONFIG_SOC_8909))
         add_flash_lod(${target} ${SOURCE_TOP_DIR}/components/hal/ldscripts/xcpu_flashrun.ld
             EXCLUDE_FROM_ALL ${ARGN})
-        add_dependencies(${target}_ldscript ${BUILD_TARGET}_bcpu sysrom_for_xcpu)
+        add_dependencies(${target}_ldscript ${CSDK_PRO}_bcpu sysrom_for_xcpu)
         target_include_directories(${target}_ldscript PRIVATE ${out_hex_dir})
         target_link_libraries(${target} PRIVATE ${rom_for_xcpu_elf} all_libs)
-        add_dependencies(${BUILD_TARGET}_ldscript ${BUILD_TARGET}_bcpu sysrom_for_xcpu)
+        add_dependencies(${CSDK_PRO}_ldscript ${CSDK_PRO}_bcpu sysrom_for_xcpu)
         add_dependencies(unittests ${target})
     endif()
 endfunction()
