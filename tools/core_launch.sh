@@ -11,8 +11,21 @@
 
 export PROJECT_ROOT=$PWD
 export BUILD_TARGET=$1
-export BUILD_RELEASE_TYPE=debug
-export PROJECT_OUT=$PROJECT_ROOT/out/${BUILD_TARGET}_${BUILD_RELEASE_TYPE}
+
+if test -d $1;then
+    export BUILD_TARGET=$1
+else
+    export BUILD_TARGET=demo/$1
+    export BUILD_DEMO=$1
+fi
+
+if  test -z ${BUILD_RELEASE_TYPE};then
+    export BUILD_RELEASE_TYPE=debug
+fi
+
+if test -n ${BUILD_DEMO};then
+    export PROJECT_OUT=$PROJECT_ROOT/out/${BUILD_TARGET}_${BUILD_RELEASE_TYPE}
+fi
 
 function remove_from_var
 {
@@ -56,7 +69,9 @@ Linux)
 esac
 
 cout() {
-    mkdir -p $PROJECT_OUT && cd $PROJECT_OUT
+    if test -n ${PROJECT_OUT}; then
+        mkdir -p $PROJECT_OUT && cd $PROJECT_OUT
+    fi
 }
 
 croot() {

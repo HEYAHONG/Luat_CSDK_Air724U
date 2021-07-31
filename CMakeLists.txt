@@ -271,7 +271,7 @@ if(CONFIG_APPIMG_LOAD_FLASH)
     if(CONFIG_BUILD_LUA)
         add_subdirectory_if_exist(app/elua/user)
     else()
-        add_subdirectory_if_exist(demo/${BUILD_TARGET})
+        add_subdirectory_if_exist(${BUILD_TARGET})
     endif(CONFIG_BUILD_LUA)    
     
     target_link_libraries(${target} PRIVATE api)
