@@ -1,4 +1,4 @@
-
+ï»¿
 #ifndef _RIL_PAL_H_
 #define _RIL_PAL_H_
 
@@ -18,12 +18,12 @@ typedef HANDLE		PAL_SEMAPHORE_ID;
 #define ssize_t		int
 #endif
 
-/* RIL PAL²ã½á¹ûÖµ */
+/* RIL PALå±‚ç»“æœå€¼ */
 #define PAL_RIL_SUCCESS			0
 
 #define PAL_RIL_ERROR			1
 
-/* µØÖ·¶ÔÆë4×Ö½Ú¶ÔÆë */
+/* åœ°å€å¯¹é½4å­—èŠ‚å¯¹é½ */
 #define PAD_SIZE(l)							(((l)+3)&~3)
 
 

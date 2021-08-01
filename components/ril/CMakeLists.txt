@@ -5,11 +5,12 @@ target_link_libraries(${target} PRIVATE ${libc_file_name} ${libm_file_name} ${li
 #target_link_libraries(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../components/lib/libopenat.a)
 
 
-#čŽžç˝ŽĺĺŤĺ¤´ćäť?
+#包含文件目录
 target_include_directories(${target} PUBLIC inc)
 target_include_directories(${target} PRIVATE ../components/include)
 target_include_directories(${target} PRIVATE ../components/newlib/include)
 target_include_directories(${target} PRIVATE ../components/openat_inc)
+target_include_directories(${target} PRIVATE ../../api/include)
 
 target_sources(${target} PUBLIC
 	src/at_process.c
