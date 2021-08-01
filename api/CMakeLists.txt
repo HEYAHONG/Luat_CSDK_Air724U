@@ -21,7 +21,7 @@ target_link_libraries(${target} PRIVATE ${libc_file_name} ${libm_file_name} ${li
 #target_link_libraries(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../components/lib/libopenat.a)
 
 
-#ÉèÖÃ°üº¬Í·ÎÄ??
+#è®¾ç½®åŒ…å«å¤´æ–‡ä»¶
 target_include_directories(${target} PUBLIC include)
 target_include_directories(${target} PRIVATE ../components/include)
 target_include_directories(${target} PRIVATE ../components/newlib/include)
