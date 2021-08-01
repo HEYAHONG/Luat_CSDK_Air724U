@@ -2,6 +2,7 @@
 #include "at_process.h"
 #include "ril_pal.h"
 #include "at_tok.h"
+#include "stdlib.h"
 
 #define MAX_AT_RESPONSE (1 * 1024)
 #define NUM_ELEMS(x) (sizeof(x) / sizeof(x[0]))
@@ -243,7 +244,7 @@ static int writeCtrlZ (const char *s)
     AT_DUMP( ">* ", s, strlen(s) );
     pal_ril_channel_write(s, len, FALSE);
     pal_ril_channel_write(ctrlz, 1, FALSE);
-  
+
     return 0;
 }
 
@@ -376,7 +377,7 @@ static void processLine(const char *line)
     {
         sp_response->success = 0;
         handleFinalResponse(line);
-#if 1        
+#if 1
     } else if (s_smsPDU != NULL && 0 == strcmp(line, "> ")) {
         // See eg. TS 27.005 4.3
         // Commands like AT+CMGS have a "> " prompt
@@ -460,7 +461,9 @@ static void readerLoop(void *arg)
         else if (isSMSUnsolicited(line))
         {
             char *line1;
+            #if 0
             const char *line2;
+            #endif // 0
 			int err;
 			char* out;
 
@@ -470,11 +473,15 @@ static void readerLoop(void *arg)
             line1 = strdup(line);
 			err = at_tok_nextstr(&line1, &out);
 		    if (err < 0)
-		        return;
+            {
+                return;
+            }
 			err = at_tok_nextstr(&line1, &out);
 		    if (err < 0)
-		        return;
-						
+            {
+                return;
+            }
+
             if (s_unsolSMSHandler != NULL)
             {
                 s_unsolSMSHandler(atoi(out));
@@ -493,7 +500,7 @@ static void readerLoop(void *arg)
                 s_unsolHandler(line1, line2);
             }
 			#endif
-			
+
 			//error:
 			//RIL_Free(line1);
         }
@@ -586,7 +593,7 @@ static void reverseIntermediates(ATResponse *p_response)
 static int writeline(const char *s, ATCommandType type, const char *responsePrefix, const char *smspdu)
 {
     int len = strlen(s);
-    UINT32 sc;
+    PVOID sc;
 
     sc = IVTBL(enter_critical_section)();
 
@@ -682,7 +689,7 @@ void ril_set_cb(PAT_MESSAGE pAtMessage)
   Input:
 
   Output:
-  Return:      
+  Return:
   Others:  1，初始化读线程
            2，初始化等待信号量
            3，初始化系统变量
@@ -858,7 +865,7 @@ int at_send_command(const char *command, ATResponse **pp_outResponse)
   Input:
 
   Output:
-  Return:      
+  Return:
   Others:
 *********************************************************/
 

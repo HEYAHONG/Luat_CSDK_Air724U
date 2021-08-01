@@ -3,7 +3,7 @@
   Author: lifei
   Description: AMOPENAT ¿ª·ÅÆ½Ì¨
   Others:
-  History: 
+  History:
     Version£º Date:       Author:   Modification:
     V0.1      2012.12.14  lifei     ´´½¨ÎÄ¼þ
 	V0.2      2012.12.26  brezen    Ìí¼Ópmd½Ó¿Ú
@@ -15,7 +15,7 @@
     V0.6      2013.01.14  brezen    ÐÞ¸ÄºÚ°×ÆÁÇåÆÁ½Ó¿Ú²ÎÊý
 	V0.7      2013.01.15  brezen    ÐÞ¸ÄºÚ°×ÆÁÇåÆÁ½Ó¿Ú²ÎÊý
     V0.8      2013.01.17  brezen    1¡¢Ìí¼ÓÏµÍ³µçÔ´¿ØÖÆ½Ó¿Ú 2¡¢Ìí¼ÓÏµÍ³¿ª¹Ø»ú½Ó¿Ú
-    V0.9      2013.01.23  brezen    ÐÞ¸ÄSPIµÄ±àÒëwarning  
+    V0.9      2013.01.23  brezen    ÐÞ¸ÄSPIµÄ±àÒëwarning
     V1.0      2013.01.28  brezen    Ìí¼ÓPSAM¿¨½Ó¿Ú
     V1.1      2013.01.30  brezen    ÐÞ¸Äpoweron_systemº¯Êý²ÎÊý
     V1.2      2013.02.06  Jack.li   Ìí¼ÓÉãÏñÍ·½Ó¿Ú
@@ -64,12 +64,15 @@ typedef struct {
     int     sec;         /* seconds */
     int     min;         /* minutes */
     int     hour;        /* hours */
-    int     day;      
+    int     day;
     int     mon;         /* month */
     int     year;        /* year */
 }t_time;
 /*-\NEW\WJ\2019.1.8\Ìí¼ÓÖ¤ÊéÓÐÐ§Ê±¼äÐ£Ñé*/
 
+#ifdef IVTBL
+#undef  IVTBL
+#endif // IVTBL
 #define IVTBL(func) OPENAT_##func
 
 #define PUB_TRACE(pFormat, ...)  IVTBL(print)(pFormat, ##__VA_ARGS__)
@@ -156,7 +159,7 @@ BOOL OPENAT_free_message(
                                      void* message_body
                                      );
 
-    
+
 BOOL OPENAT_send_message(                           /* ·¢ËÍÏûÏ¢½Ó¿Ú£¬Ìí¼Óµ½ÏûÏ¢¶ÓÁÐÎ²²¿ */
                                       HANDLE   destTask,
                                       int msg_id,
@@ -230,10 +233,10 @@ UINT64 OPENAT_timer_remaining(
 
  BOOL OPENAT_play_gif(
                                              char* buff,
-                                            UINT8* gif_buf, 
+                                            UINT8* gif_buf,
                                             int length,
-                                            int x, 
-                                            int y, 
+                                            int x,
+                                            int y,
                                             int times
                                             );
 
@@ -282,7 +285,7 @@ INT8 OPENAT_get_TimeZone(VOID);
 /*+\BUG\wangyuan\2020.04.30\BUG_1757:Air724Ä¿Ç°Ã»ÓÐalarm demo*/
 BOOL OPENAT_InitAlarm(                                        /* ÄÖÖÓ³õÊ¼»¯½Ó¿Ú */
                             T_AMOPENAT_ALARM_CONFIG *pConfig   /* ÄÖÖÓÅäÖÃ²ÎÊý */
-                       ); 
+                       );
 
 
 
@@ -331,7 +334,7 @@ BOOL OPENAT_release_semaphore(
 
 
 UINT32 OPENAT_get_semaphore_value(                   /* »ñÈ¡ÏûºÄÁ¿Öµ*/
-                            HANDLE hSem             /* ÐÅºÅÁ¿¾ä±ú£¬create_semaphore½Ó¿Ú·µ»ØÖµ */  
+                            HANDLE hSem             /* ÐÅºÅÁ¿¾ä±ú£¬create_semaphore½Ó¿Ú·µ»ØÖµ */
                             );
 
 
@@ -416,7 +419,7 @@ UINT16 OPENAT_unicode_to_ascii(UINT8 *pOutBuffer, WCHAR *pInBuffer);
 
 UINT16 OPENAT_ascii_to_unicode(WCHAR *pOutBuffer, UINT8 *pInBuffer);
 
-    
+
 /*-\NEW\liweiqiang\2013.7.1\[OpenAt]Ôö¼ÓÏµÍ³Ö÷ÆµÉèÖÃ½Ó¿Ú*/
     /*******************************************
     **              FILE SYSTEM               **
@@ -454,7 +457,7 @@ INT32 OPENAT_write_file(                            /* Ð´ÈëÎÄ¼þ½Ó¿Ú*/
 
 INT32 OPENAT_flush_file(                            /* Á¢¼´Ð´Èëflash*/
                             INT32 iFd               /* ÎÄ¼þ¾ä±ú£¬open_file »ò create_file ·µ»ØµÄÓÐÐ§²ÎÊý */
-                       );    
+                       );
 
 
 
@@ -506,11 +509,11 @@ INT32 OPENAT_remove_dir(                            /* É¾³ýÄ¿Â¼½Ó¿Ú *//* ¸ÃÄ¿Â¼±
 INT32 OPENAT_remove_dir_rec(                        /* µÝ¹éÉ¾³ýÄ¿Â¼½Ó¿Ú *//* ¸ÃÄ¿Â¼ÏÂËùÓÐÎÄ¼þ¡¢Ä¿Â¼¶¼»á±»É¾³ý */
                             char* pszDirNameUniLe  /* Ä¿Â¼Â·¾¶ unicode little endian */
                            );
-                           
+
 
 INT32 OPENAT_remove_file_rec(                        /* µÝ¹éÉ¾³ýÎÄ¼þ½Ó¿Ú *//* ¸ÃÄ¿Â¼ÏÂËùÓÐÎÄ¼þ¶¼»á±»É¾³ý */
                             char* pszDirNameUniLe  /* Ä¿Â¼Â·¾¶ unicode little endian */
-                           );                          
+                           );
 
 
 
@@ -565,7 +568,7 @@ BOOL OPENAT_fs_format(T_AMOPENAT_USER_FSMOUNT *param);
 /*-\NEW\zhuwangbin\2020.08.08\Ìí¼ÓÎÄ¼þÏµÍ³mount½Ó¿Ú*/
 
 /*-\NewReq WM-743\maliang\2013.3.28\[OpenAt]Ôö¼Ó½Ó¿Ú»ñÈ¡ÎÄ¼þÏµÍ³ÐÅÏ¢*/
-    
+
     /*+\NewReq\Jack.li\2013.1.17\Ôö¼ÓT¿¨½Ó¿Ú*/
 INT32 OPENAT_init_tflash(                            /* ³õÊ¼»¯T¿¨½Ó¿Ú */
                             PAMOPENAT_TFLASH_INIT_PARAM pTlashInitParam/* T¿¨³õÊ¼»¯²ÎÊý */
@@ -581,7 +584,7 @@ E_AMOPENAT_MEMD_ERR OPENAT_flash_erase(              /*flash²ÁÐ´ 128K¶ÔÆë*/
                        );
 
 
-    
+
 E_AMOPENAT_MEMD_ERR OPENAT_flash_write(              /*Ð´flash*/
                             UINT32 startAddr,
                             UINT32 size,
@@ -597,7 +600,7 @@ E_AMOPENAT_MEMD_ERR OPENAT_flash_read(               /*¶Áflash*/
                             UINT32* readSize,
                             UINT8* buf
                        );
-                       
+
 UINT32 OPENAT_flash_page(void);
 
 /*+\bug2991\zhuwangbin\2020.06.11\Ôö¼Ólua otp½Ó¿Ú*/
@@ -613,11 +616,11 @@ BOOL openat_flash_lockSecurity(UINT8 num);
 E_OPENAT_OTA_RESULT OPENAT_fota_init(void);
 E_OPENAT_OTA_RESULT OPENAT_fota_download(const char* data, UINT32 len, UINT32 total);
 E_OPENAT_OTA_RESULT OPENAT_fota_done(void);
-    
+
     /*******************************************
     **                 NV                     **
-    *******************************************/    
-    /*ÒòÎªÏÂÃæµÄ½Ó¿Ú»áÖ±½Ó²Ù×÷flash£¬»áÒýÆðÏµÍ³×èÈû£¬²»ÒªÔÚÖÐ¶Ï»òÕßÒªÇó±È½Ï¸ßµÄTASKÖÐÔËÐÐ*/    
+    *******************************************/
+    /*ÒòÎªÏÂÃæµÄ½Ó¿Ú»áÖ±½Ó²Ù×÷flash£¬»áÒýÆðÏµÍ³×èÈû£¬²»ÒªÔÚÖÐ¶Ï»òÕßÒªÇó±È½Ï¸ßµÄTASKÖÐÔËÐÐ*/
 INT32 OPENAT_nv_init(                                /*NV ³õÊ¼»¯½Ó¿Ú*/
                       UINT32 addr1,                  /*NV ´æ·ÅµØÖ·1 4KByteµØÖ·¶ÔÆë ´óÐ¡4KByte*/
                       UINT32 addr2                   /*NV ´æ·ÅµØÖ·2 4KByteµØÖ·¶ÔÆë ´óÐ¡4KByte*/
@@ -632,7 +635,7 @@ INT32 OPENAT_nv_add(                                 /*Ôö¼ÓÒ»¸öNV´æ´¢ÇøÓò*/
 
 INT32 OPENAT_nv_delete(                              /*É¾³ýNV*/
                       UINT32 nv_id
-                      );                 
+                      );
 
 
 INT32 OPENAT_nv_read(                                /*¶ÁÈ¡NVÄÚÈÝ*/
@@ -642,40 +645,40 @@ INT32 OPENAT_nv_read(                                /*¶ÁÈ¡NVÄÚÈÝ*/
                      UINT32* readSize                /*Êµ¼Ê¶ÁÈ¡³¤¶È*/
                     );
 
-    
+
 INT32 OPENAT_nv_write(                               /*Ð´ÈëNVÄÚÈÝ*/
                       UINT32 nv_id,                  /*NV ID Ä¿Ç°Ö»Ö§³Ö0-255*/
                       UINT8* buf,                    /*buf*/
                       UINT32 bufSize,                /*bufµÄ´óÐ¡*/
                       UINT32* writeSize              /*Êµ¼ÊÐ´Èë³¤¶È*/
-                     );          
+                     );
     /*******************************************
     **                Hardware                **
     *******************************************/
     /****************************** GPIO ******************************/
-BOOL OPENAT_config_gpio(                          
+BOOL OPENAT_config_gpio(
                             E_AMOPENAT_GPIO_PORT port,  /* GPIO±àºÅ */
                             T_AMOPENAT_GPIO_CFG *cfg    /* Êä³ö»òÊäÈë */
                        );
 
 
-    
-BOOL OPENAT_set_gpio(                               
+
+BOOL OPENAT_set_gpio(
                             E_AMOPENAT_GPIO_PORT port,  /* GPIO±àºÅ */
                             UINT8 value                 /* 0 or 1 */
                     );
 
 
 
-/*+:\NewReq WM-475\brezen\2012.12.14\ÐÞ¸Ägpio½Ó¿Ú */				
-BOOL OPENAT_read_gpio(                            
+/*+:\NewReq WM-475\brezen\2012.12.14\ÐÞ¸Ägpio½Ó¿Ú */
+BOOL OPENAT_read_gpio(
                             E_AMOPENAT_GPIO_PORT port,  /* GPIO±àºÅ */
                             UINT8* value                /* ½á¹û 0 or 1 */
                       );
 /*-:\NewReq WM-475\brezen\2012.12.14\ÐÞ¸Ägpio½Ó¿Ú */
 
 /*+\BUG WM-720\rufei\2013.3.21\ Ôö¼ÓgpioµÄclose½Ó¿Ú*/
-BOOL OPENAT_close_gpio(                            
+BOOL OPENAT_close_gpio(
                             E_AMOPENAT_GPIO_PORT port/* GPIO±àºÅ */
                       );
 /*-\BUG WM-720\rufei\2013.3.21\ Ôö¼ÓgpioµÄclose½Ó¿Ú*/
@@ -683,7 +686,7 @@ BOOL OPENAT_close_gpio(
 bool OPENAT_gpioPulse(E_AMOPENAT_GPIO_PORT port, unsigned high_us, unsigned low_us, unsigned count, unsigned idle);
 
 /****************************** PMD ******************************/
-BOOL OPENAT_init_pmd(     
+BOOL OPENAT_init_pmd(
                             E_AMOPENAT_PM_CHR_MODE chrMode,     /* ³äµç·½Ê½ */
 /*+\NEW WM-746\rufei\2013.3.30\Ôö¼ÓÐ¾Æ¬IC³äµç*/
                             T_AMOPENAT_PMD_CFG*    cfg,         /*³äµçÅäÖÃ*/
@@ -715,14 +718,14 @@ E_AMOPENAT_CHR_HW_STATUS OPENAT_get_chargerHwStatus(
 /*+\TASK\wangyuan\2020.06.28\task_255:Ö§³ÖÖÐÔÆÐÅ°², ¼æÈÝ2g CSDKµÄ½Ó¿ÚÌí¼Ó*/
 int OPENAT_get_chg_param(BOOL *battStatus, u16 *battVolt, u8 *battLevel, BOOL *chargerStatus, u8 *chargeState);
 /*-\TASK\wangyuan\2020.06.28\task_255:Ö§³ÖÖÐÔÆÐÅ°², ¼æÈÝ2g CSDKµÄ½Ó¿ÚÌí¼Ó*/
-BOOL OPENAT_poweron_system(                                     /* Õý³£¿ª»ú */  
+BOOL OPENAT_poweron_system(                                     /* Õý³£¿ª»ú */
                             E_AMOPENAT_STARTUP_MODE simStartUpMode,/* ¿ªÆôSIM¿¨·½Ê½ */
                             E_AMOPENAT_STARTUP_MODE nwStartupMode/* ¿ªÆôÐ­ÒéÕ»·½Ê½ */
                           );
 
 
 
-VOID OPENAT_poweroff_system(                                    /* Õý³£¹Ø»ú£¬°üÀ¨¹Ø±ÕÐ­ÒéÕ»ºÍ¹©µç */        
+VOID OPENAT_poweroff_system(                                    /* Õý³£¹Ø»ú£¬°üÀ¨¹Ø±ÕÐ­ÒéÕ»ºÍ¹©µç */
                             VOID
                            );
 
@@ -740,7 +743,7 @@ BOOL OPENAT_gpio_disable_pull(                            /* GPIOÅäÖÃ½Ó¿Ú */
         );
 
 VOID OPENAT_enter_deepsleep(VOID);                                   /* ½øÈëË¯Ãß */
-                      
+
 
 
 VOID OPENAT_exit_deepsleep(VOID);                                     /* ÍË³öË¯Ãß */
@@ -856,7 +859,7 @@ UINT32 OPENAT_write_i2c(                                        /* Êµ¼ÊÐ´Èë³¤¶È 
 
 UINT32 OPENAT_read_i2c(                                         /* Êµ¼Ê¶ÁÈ¡³¤¶È */
                             E_AMOPENAT_I2C_PORT port,          /* I2C ±àºÅ */
-                            UINT8 slaveAddr, 
+                            UINT8 slaveAddr,
                             CONST UINT8 *pRegAddr,              /* I2CÍâÉè¼Ä´æÆ÷µØÖ· */
                             UINT8* buf,                         /* ´æ´¢Êý¾ÝµØÖ· */
                             UINT32 bufLen                       /* ´æ´¢¿Õ¼ä³¤¶È */
@@ -871,31 +874,31 @@ BOOL  OPENAT_open_bt(
 
 
 BOOL  OPENAT_close_bt(VOID);
-                           
+
 
 
 
 BOOL  OPENAT_poweron_bt(VOID);
 
-  
+
 BOOL  OPENAT_poweroff_bt(VOID);
 
 BOOL  OPENAT_send_cmd_bt
                       (
-                            E_AMOPENAT_BT_CMD cmd, 
+                            E_AMOPENAT_BT_CMD cmd,
                             U_AMOPENAT_BT_CMD_PARAM* param
-                      );    
+                      );
 
 BOOL  OPENAT_build_rsp_bt
                       (
                             E_AMOPENAT_BT_RSP rsp,
                             U_AMOPENAT_BT_RSP_PARAM* param
-                      );   
+                      );
 
 /*±¾¶Ë×÷ÎªDevAÉè±¸£¬Ö÷¶¯·¢ÆðÁ¬½Ó£¬Á¬½Ó½á¹ûOPENAT_BT_SPP_CONNECT_CNF
 Èç¹û×÷ÎªDevBÉè±¸£¬¼´¶Ô¶ËÖ÷¶¯·¢ÆðÁ¬½Ó£¬ÄÇ¾Í²»ÐèÒªµ÷ÓÃÕâ¸ö½Ó¿Ú£¬
 ¶Ô¶ËÁ¬½Óºó»áÊÕµ½OPENAT_BT_SPP_CONNECT_INDÏûÏ¢*/
-BOOL  OPENAT_connect_spp                              
+BOOL  OPENAT_connect_spp
                       (
                             T_AMOPENAT_BT_ADDR* addr,
                             T_AMOPENAT_UART_PARAM* portParam    /*ÔÝÊ±²»Ö§³Ö,¿ÉÒÔÐ´NULL£¬Ä¬ÈÏÅäÖÃÎª9600,8(data),1(stop),none(parity)*/
@@ -904,7 +907,7 @@ BOOL  OPENAT_connect_spp
 BOOL  OPENAT_disconnect_spp                                    /*¶Ï¿ªÁ¬½Ó£¬½á¹û OPENAT_BT_SPP_DISCONNECT_CNF*/
                       (
                             UINT8   port                        /*¶Ë¿ÚºÅ£¬»áÔÚOPENAT_BT_SPP_CONNECT_IND/OPENAT_BT_SPP_CONNECT_CNFÖÐÉÏ±¨*/
-                      ); 
+                      );
 
 INT32  OPENAT_write_spp                                         /*·¢ËÍ½á¹û»áÔÚ»Øµ÷º¯ÊýÀïµÄOPENAT_BT_SPP_SEND_DATA_CNFÊÂ¼þÖÐÉÏ±¨*/
                                                                 /*·µ»ØÖµÎªÊµ¼ÊÖ´ÐÐÐ´ÈëµÄ³¤¶È£¬Èç¹ûÎª0±íÊ¾¸ù±¾Ã»ÓÐÊý¾Ý±»·¢ËÍ£¬Ò²Ã»ÓÐ
@@ -922,17 +925,17 @@ INT32  OPENAT_read_spp                                         /*»Øµ÷º¯ÊýÖÐÊÕµ½O
                             UINT8   port,                       /*¶Ë¿ÚºÅ£¬»áÔÚOPENAT_BT_SPP_CONNECT_IND/OPENAT_BT_SPP_CONNECT_CNFÖÐÉÏ±¨*/
                             UINT8*  buf,
                             UINT32  bufLen
-                      );   
+                      );
 
 
 /****************************** AUDIO ******************************/
 BOOL OPENAT_open_tch(VOID);                                       /* ´ò¿ªÓïÒô£¬ÔÚÍ¨»°¿ªÊ¼Ê±µ÷ÓÃ */
-                           
+
 
 
 BOOL OPENAT_close_tch(VOID);                                         /* ¹Ø±ÕÓïÒô£¬Í¨»°½áÊøÊ±µ÷ÓÃ */
 
-                            
+
 BOOL OPENAT_play_tone(                                          /* ²¥·ÅTONEÒô½Ó¿Ú */
                             E_AMOPENAT_TONE_TYPE toneType,      /* TONEÒôÀàÐÍ */
                             UINT16 duration,                    /* ²¥·ÅÊ±³¤ */
@@ -943,7 +946,7 @@ BOOL OPENAT_play_tone(                                          /* ²¥·ÅTONEÒô½Ó¿
 BOOL OPENAT_stop_tone(VOID);                                          /* Í£Ö¹²¥·ÅTONEÒô½Ó¿Ú */
 
 
-                            
+
 BOOL OPENAT_play_dtmf(                                          /* ²¥·ÅDTMFÒô½Ó¿Ú */
                             E_AMOPENAT_DTMF_TYPE dtmfType,      /* DTMFÀàÐÍ */
                             UINT16 duration,                    /* ²¥·ÅÊ±³¤ */
@@ -959,7 +962,7 @@ int OPENAT_streamplayV2(E_AMOPENAT_AUD_PLAY_TYPE playtype,E_AMOPENAT_AUD_FORMAT 
 /*-\ÈÎÎñ\czm\2020.9.20\ÈÎÎñ:439 ´óÌÆPOCÏîÄ¿¿ª·¢:Ìí¼ÓÁ÷Â¼ÒôºÍÁ÷²¥·Å½Ó¿Ú£¬²¢ÐèÒªÖ§³ÖÏû³ýµ×ÔëµÄËã·¨*/
 int OPENAT_streamplay(E_AMOPENAT_AUD_FORMAT playformat,AUD_PLAY_CALLBACK_T cb,char* data,int len);
 
-                            
+
 /*+\NewReq WM-584\maliang\2013.2.21\[OpenAt]Ö§³ÖT¿¨²¥·ÅMP3*/
 BOOL OPENAT_play_music(T_AMOPENAT_PLAY_PARAM*  playParam);
 /*-\NewReq WM-584\maliang\2013.2.21\[OpenAt]Ö§³ÖT¿¨²¥·ÅMP3*/
@@ -968,14 +971,14 @@ BOOL OPENAT_play_music(T_AMOPENAT_PLAY_PARAM*  playParam);
 BOOL OPENAT_stop_music(VOID);                                         /* Í£Ö¹ÒôÆµ²¥·Å½Ó¿Ú */
 
 
-                            
+
 BOOL OPENAT_pause_music(VOID);                                        /* ÔÝÍ£ÒôÆµ²¥·Å½Ó¿Ú */
 
 
-                            
+
 BOOL OPENAT_resume_music(VOID);                                      /* Í£Ö¹ÒôÆµ²¥·Å½Ó¿Ú */
 
-                           
+
 /*+\NewReq WM-710\maliang\2013.3.18\ [OpenAt]Ôö¼Ó½Ó¿ÚÉèÖÃMP3²¥·ÅµÄÒôÐ§*/
 BOOL OPENAT_set_eq(                                       /* ÉèÖÃMP3ÒôÐ§*/
                             E_AMOPENAT_AUDIO_SET_EQ setEQ
@@ -983,18 +986,18 @@ BOOL OPENAT_set_eq(                                       /* ÉèÖÃMP3ÒôÐ§*/
 /*-\NewReq WM-710\maliang\2013.3.18\ [OpenAt]Ôö¼Ó½Ó¿ÚÉèÖÃMP3²¥·ÅµÄÒôÐ§*/
 
 BOOL OPENAT_open_mic(VOID);                                           /* ¿ªÆôMIC½Ó¿Ú */
-                            
+
 
 
 BOOL OPENAT_close_mic(VOID);                                          /* ¹Ø±ÕMIC½Ó¿Ú */
 
-                           
+
 BOOL OPENAT_mute_mic(VOID);                                           /* MIC¾²Òô½Ó¿Ú */
 
 
 BOOL OPENAT_unmute_mic(VOID);                                         /* ½â³ýMIC¾²Òô½Ó¿Ú */
 
-                            
+
 BOOL OPENAT_set_mic_gain(                                       /* ÉèÖÃMICÔöÒæ½Ó¿Ú */
                             UINT16 micGain                      /* ÉèÖÃMICµÄÔöÒæ£¬×î´óÎª20 */
                         );
@@ -1021,7 +1024,7 @@ BOOL OPENAT_mute_speaker(VOID);                                       /* ÑïÉùÆ÷¾
 BOOL OPENAT_unmute_speaker(VOID);                                     /* ½â³ýÑïÉùÆ÷¾²Òô½Ó¿Ú */
 
 
-                           
+
 BOOL OPENAT_set_speaker_gain(                                   /* ÉèÖÃÑïÉùÆ÷µÄÔöÒæ */
                             E_AMOPENAT_SPEAKER_GAIN speakerGain /* ÉèÖÃÑïÉùÆ÷µÄÔöÒæ */
                             );
@@ -1029,7 +1032,7 @@ BOOL OPENAT_set_speaker_gain(                                   /* ÉèÖÃÑïÉùÆ÷µÄÔ
 
 
 /*+\bug\wj\2020.5.6\Ôö¼ÓÍ¨»°ÖÐµ÷½ÚÒôÁ¿½Ó¿Ú*/
-BOOL OPENAT_set_sph_vol(								   
+BOOL OPENAT_set_sph_vol(
 						UINT32 vol);
 /*-\bug\wj\2020.5.6\Ôö¼ÓÍ¨»°ÖÐµ÷½ÚÒôÁ¿½Ó¿Ú*/
 /*+\BUG\wangyuan\2020.08.10\BUG_2801: Ë¼ÌØCSDK Í¨¹ýiot_audio_set_speaker_vol()½Ó¿ÚÉèÖÃÍ¨¹ýÒôÁ¿ÎÞÐ§ AT+CLVL¿ÉÒÔÐÞ¸ÄÍ¨»°ÒôÁ¿*/
@@ -1090,11 +1093,11 @@ BOOL  OPENAT_audio_loopback(BOOL  start,                    /*¿ªÊ¼»òÍ£Ö¹»Ø»·²âÊÔ
 
 
 
-BOOL  OPENAT_audio_inbandinfo(PINBANDINFO_CALLBACK callback); 
+BOOL  OPENAT_audio_inbandinfo(PINBANDINFO_CALLBACK callback);
 
 int OPENAT_WritePlayData(char* data, unsigned size);
 
-    
+
 /****************************** ADC ******************************/
 /*+\BUG\wangyuan\2020.06.30\BUG_2424:CSDK-8910 ADC µÄAPI ±àÒë´íÎó*/
 /*+\bug3689\zhuwangbin\2020.11.25\adcÌí¼Ó¿ÉÑ¡²ÎÊýscale*/
@@ -1128,7 +1131,7 @@ bool OPENAT_pwm_close(E_AMOPENAT_PWM_PORT port);
 /*-\bug3708\zhuwangbin\2020.11.26\ÓÅ»¯pwm´úÂë*/
 
 /****************************** LCD ******************************/
-/* MONO */                                                  /* ºÚ°×ÆÁ*/			
+/* MONO */                                                  /* ºÚ°×ÆÁ*/
 BOOL OPENAT_init_mono_lcd(                                      /* ÆÁÄ»³õÊ¼»¯½Ó¿Ú */
                             T_AMOPENAT_MONO_LCD_PARAM*  monoLcdParamP
                     );
@@ -1169,7 +1172,7 @@ BOOL OPENAT_close_color_lcd(void);/* Lcd¹Ø±Õ½Ó¿Ú */
 /*-\bug2958\czm\2020.9.1\disp.close() Ö®ºóÔÙÖ´ÐÐdisp.init ÎÞÌáÊ¾Ö±½ÓÖØÆô*/
 
 BOOL OPENAT_spiconfig_color_lcd(                     /* ²ÊÆÁSPIÅäÖÃ */
-                        void                    
+                        void
                         );
 
 VOID OPENAT_send_color_lcd_command(                             /* ·¢ËÍÃüÁî½Ó¿Ú */
@@ -1201,17 +1204,17 @@ BOOL OPENAT_camera_videorecord_start(                           /* ¿ªÊ¼Â¼ÖÆÊÓÆµ 
 
 
 BOOL OPENAT_camera_videorecord_pause(                           /* ÔÝÍ£Â¼ÖÆÊÓÆµ */
-                    void                    
+                    void
                     );
 
 
 BOOL OPENAT_camera_videorecord_resume(                          /* »Ö¸´Â¼ÖÆÊÓÆµ */
-                        void                    
+                        void
                         );
 
 
 BOOL OPENAT_camera_videorecord_stop(                            /* Í£Ö¹Â¼ÖÆÊÓÆµ */
-                        void                    
+                        void
                         );
 
 
@@ -1255,7 +1258,7 @@ BOOL OPENAT_video_stop(                                         /* Í£Ö¹ */
                         );
     /*-\NEW\Jack.li\2013.2.10\Ôö¼ÓÊÓÆµ²¥·Å½Ó¿Ú */
 
-#if 0 
+#if 0
 void OPENAT_ttsply_Error_Callback(S32 ttsResult);
 void OPENAT_ttsply_State_Callback(int ttsplyState);
 BOOL OPENAT_ttsply_initEngine(AMOPENAT_TTSPLY_PARAM *param);
@@ -1268,15 +1271,15 @@ BOOL OPENAT_ttsply_stop(void);
 
 
 void OPENAT_AW9523B_display(
-                                                                u8 num1, 
-                                                                u8 num2, 
+                                                                u8 num1,
+                                                                u8 num2,
                                                                 u8 num3
                                                                 );
 
 
 
 void OPENAT_AW9523B_set_gpio(
-                                                                    u8 pin_num, 
+                                                                    u8 pin_num,
                                                                     u8 value
                                                                     );
 
@@ -1284,7 +1287,7 @@ void OPENAT_AW9523B_init(void);
 
 
 BOOL OPENAT_register_msg_proc(
-                                                                    int msg_id, 
+                                                                    int msg_id,
                                                                     openat_msg_proc msg_proc
                                                                     );
 
@@ -1298,7 +1301,7 @@ typedef enum SLI3108_STATUS_TAG
     SLI3108_STATUS_INVALID,
     SLI3108_STATUS_LOW,                          /*³¬³ö×îµÍ·§Öµ£¬±íÊ¾Î´Åå´÷*/
     SLI3108_STATUS_HIGH,                         /*³¬³ö×î¸ß·§Öµ£¬±íÊ¾ÒÑÅå´÷*/
-}SLI3108_STATUS; 
+}SLI3108_STATUS;
 
 
     /* NULL */
@@ -1306,13 +1309,13 @@ typedef enum SLI3108_STATUS_TAG
 BOOL OPENAT_init_keypad(                                        /* ¼üÅÌ³õÊ¼»¯½Ó¿Ú */
                             T_AMOPENAT_KEYPAD_CONFIG *pConfig   /* ¼üÅÌÅäÖÃ²ÎÊý */
                        );
-    
+
 
     /****************************** TOUCHSCREEN ******************************/
 BOOL OPENAT_init_touchScreen(                                   /* ´¥ÃþÆÁ³õÊ¼»¯½Ó¿Ú */
                             PTOUCHSCREEN_MESSAGE pTouchScreenMessage /* ´¥ÆÁÏûÏ¢»Øµ÷º¯Êý */
                             );
-    
+
 
 
 VOID OPENAT_TouchScreen_Sleep_In(VOID);
@@ -1321,7 +1324,7 @@ VOID OPENAT_TouchScreen_Sleep_In(VOID);
 
 VOID OPENAT_TouchScreen_Sleep_Out(VOID);
 
-    
+
 /******************************** PSAM ***********************************/
 /* ×¢Òâ:::PSAM¿¨½Ó¿ÚÔÚ²Ù×÷Éè±¸Ê±»áµ¼ÖÂµ÷ÓÃÕß±»¹ÒÆð£¬Ö±µ½Éè±¸ÓÐÏìÓ¦»òÕß2s+³¬Ê± */
 E_AMOPENAT_PSAM_OPER_RESULT OPENAT_open_psam(                   /* ´ò¿ªpsam */
@@ -1347,26 +1350,26 @@ VOID OPENAT_close_psam(                                         /* ¹Ø±Õpsam */
 
 	Õë¶ÔÐèÒªDATA²ÎÊýµÄPSAMÖ¸Áî£¬ÐèÒª·Ö²½·¢ËÍ£¬
 	  µÚÒ»²½ ·¢ËÍDATAÖ®Ç°µÄÃüÁî²¿·Ö£¬Í¬Ê±ÉèÖÃrxLen=1£¬stopClock = FALSE
-	  	·µ»ØÖµ¿ÉÄÜÎªIns ¡¢ ~Ins 
+	  	·µ»ØÖµ¿ÉÄÜÎªIns ¡¢ ~Ins
 	  		Èç¹û·µ»ØÊÇIns£¬½øÈëµÚÈý²½
 	  		Èç¹û·µ»ØÊÇ~Ins£¬Ôò½øÈëµÚ¶þ²½
 	  µÚ¶þ²½ Èç¹ûDATAÖÐÊ£ÓàµÄÊý¾Ý´óÓÚ1¸ö×Ö½Ú£¬·¢ËÍÒ»¸ö×Ö½ÚµÄDATAÊ£ÓàÊý¾Ý£¬Í¬Ê±ÉèÖÃrxLen=1£¬stopClock = FALSE£¬
 	        ·ñÔò£¬Ö±½Ó½øÈëµÚÈý²½
 	     ·µ»ØÖµµÄ´¦ÀíºÍµÚÒ»²½·µ»ØÖµ´¦ÀíÒ»ÖÂ
-		   
+
 	  µÚÈý²½·¢ËÍDATAÖÐµÄÊ£ÓàÊý¾Ý£¬Í¬Ê±ÉèÖÃstopClock=TRUE,rxLen¸ù¾ÝÐèÒªÉèÖÃ
-	*/					  
+	*/
 E_AMOPENAT_PSAM_OPER_RESULT OPENAT_rw_psam(                     /* ´«ÊäÊý¾Ý */
                             E_AMOPENAT_PSAM_ID id,              /* Ó²¼þSIM¿¨½Ó¿Ú */
                             CONST UINT8*  txBuf,                /* Ð´»º´æ */
                             UINT16        txLen,                /* Ð´»º´æ³¤¶È */
                             UINT8*        rxBuf,                /* ¶Á»º´æ */
                             UINT16        rxLen,                /* ¶Á»º´æ³¤¶È */
-                            BOOL          stopClock             /* ÃüÁî·Ö¿ª·¢ËÍÉèÖÃÎªFALSE, ÃüÁîÒ»´Î·¢ËÍ»òÕßÎª·Ö²¼·¢ËÍµÄ×îºóÒ»²½ÉèÖÃÎªTRUE*/  
+                            BOOL          stopClock             /* ÃüÁî·Ö¿ª·¢ËÍÉèÖÃÎªFALSE, ÃüÁîÒ»´Î·¢ËÍ»òÕßÎª·Ö²¼·¢ËÍµÄ×îºóÒ»²½ÉèÖÃÎªTRUE*/
                                           );
 
 
-    
+
 E_AMOPENAT_PSAM_OPER_RESULT OPENAT_reset_psam(                  /* ¸´Î»PSAM */
                             E_AMOPENAT_PSAM_ID id,              /* Ó²¼þSIM¿¨½Ó¿Ú */
                             UINT8*      atrBuf,                 /* ATR »º´æ */
@@ -1403,7 +1406,7 @@ BOOL OPENAT_tune_fm(											/* µ÷µ½Ö¸¶¨ÆµÂÊ */
 
 
 BOOL OPENAT_seek_fm(											/* ËÑË÷ÏÂÒ»¸öÌ¨ */
-                            BOOL seekDirection					/* TRUE:ÆµÂÊÔö¼ÓµÄ·½Ïò FALSE::ÆµÂÊ¼õÐ¡µÄ·½Ïò */		
+                            BOOL seekDirection					/* TRUE:ÆµÂÊÔö¼ÓµÄ·½Ïò FALSE::ÆµÂÊ¼õÐ¡µÄ·½Ïò */
                    );
 
 
@@ -1414,7 +1417,7 @@ BOOL OPENAT_stopseek_fm(										/* Í£Ö¹ËÑË÷ */
 
 BOOL OPENAT_setvol_fm(											/* ÉèÖÃÒôÐ§ */
                             E_AMOPENAT_FM_VOL_LEVEL volume, 	/* ÉèÖÃÒôÁ¿ */
-                            BOOL bassBoost, 
+                            BOOL bassBoost,
                             BOOL forceMono
                      );
 
@@ -1499,7 +1502,7 @@ void OPENAT_uhid_close(
 
 
 int32 OPENAT_uhid_write(
-        uint8 *data_p, 
+        uint8 *data_p,
         uint32 length);
 /*-\NEW AMOPENAT-91 \zhangyang\2013.11.19\Ôö¼ÓUSB HID¹¦ÄÜ*/
 

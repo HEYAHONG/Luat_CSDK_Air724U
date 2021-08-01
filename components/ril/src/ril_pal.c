@@ -1,6 +1,7 @@
 ﻿
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "at_process.h"
 #include "ril_pal.h"
@@ -30,7 +31,7 @@ void RIL_Free(void *p)
 void *RIL_Calloc(size_t number, size_t size)
 {
 	void *p;
-    
+
 	p = OPENAT_malloc(number*size);
 
 	ASSERT(p != NULL);
@@ -68,7 +69,7 @@ UINT pal_ril_send_high_prio_signal(PAL_THREAD_ID thread_id, void *msg)
 UINT pal_ril_receive_signal(PAL_THREAD_ID thread_id, void **pp_msg)
 {
 	ASSERT(thread_id != 0);
-    
+
 
     int msgId;
     OPENAT_wait_message(thread_id, &msgId, pp_msg, 0);
@@ -109,7 +110,7 @@ int asprintf(char **str, const char *fmt, ...)
 	size_t str_l;
 
     *str = RIL_Malloc(1024/*TODO*/);
-    
+
 	va_start(ap, fmt);
     str_l = vsprintf(*str, fmt, ap);
     va_end(ap);
@@ -128,11 +129,11 @@ int pal_ril_channel_read(char *buffer, int size)
 {
 	RILChannelData *p_msg;
     int len;
-    
+
 	pal_ril_receive_signal(RIL_GetReaderThreadId(), (void **)&p_msg);
 
 	len = p_msg->len;
-    
+
 	if(size < p_msg->len)
     {
 		len = size;
@@ -141,7 +142,7 @@ int pal_ril_channel_read(char *buffer, int size)
     }
 
     RIL_DBG_OUT(("[ril] %s (%d) %s", __FUNCTION__, p_msg->len, p_msg->data));
-	
+
     memcpy(buffer, p_msg->data, len);
 
     if(NULL != p_msg->data)
@@ -149,7 +150,7 @@ int pal_ril_channel_read(char *buffer, int size)
         OPENAT_free(p_msg->data);
     }
     OPENAT_free(p_msg);
-    
+
 	return len;
 }
 
@@ -164,7 +165,7 @@ __strdup (const char *s)
 
   memcpy (new_s, s, len);
 
-  return (char *)new_s; 
+  return (char *)new_s;
 }
 
 
@@ -185,9 +186,9 @@ void RIL_SendAtData(void* data, int len,BOOL CR_flag)
         len += 2;
     }
     pData = iot_os_malloc(len+1);
-    
+
     ASSERT(NULL != pData);
-    
+
     if(TRUE == CR_flag)
     {
         memcpy(pData, data, len - 2);
@@ -199,7 +200,7 @@ void RIL_SendAtData(void* data, int len,BOOL CR_flag)
         memcpy(pData, data, len);
     }
     pData[len] = '\0';
-    
+
     IVTBL(send_at_command)(pData, len);
     iot_os_free(pData);
 }
@@ -210,7 +211,7 @@ void  AT_DUMP(const char*  prefix, const char*  buff, int  len)
     if (len < 0)
     {
 	    LOGD("%s", buff);
-    }    
+    }
 	else
     {
 		char traceBuffer[400+1];

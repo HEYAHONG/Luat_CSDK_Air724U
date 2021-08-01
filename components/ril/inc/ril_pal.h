@@ -27,20 +27,20 @@ typedef HANDLE		PAL_SEMAPHORE_ID;
 #define PAD_SIZE(l)							(((l)+3)&~3)
 
 
-#define AT_TOK_DEBUG 
-
-#ifdef AT_TOK_DEBUG    
+#define AT_TOK_DEBUG
+#include "iot_debug.h"
+#ifdef AT_TOK_DEBUG
 #define RIL_DBG_OUT(s)						iot_debug_print s
 #define LOGD								iot_debug_print
 #define LOGW								iot_debug_print
 #define LOGE								iot_debug_print
 #define LOGI								iot_debug_print
 #else
-#define RIL_DBG_OUT(s)						
-#define LOGD(...) 								
-#define LOGW(...) 								
-#define LOGE(...) 							
-#define LOGI(...) 
+#define RIL_DBG_OUT(s)
+#define LOGD(...)
+#define LOGW(...)
+#define LOGE(...)
+#define LOGI(...)
 #endif
 
 char *__strdup (const char *s);
