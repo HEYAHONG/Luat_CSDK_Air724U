@@ -23,6 +23,7 @@ if "%BUILD_RELEASE_TYPE%A" == "A"  set BUILD_RELEASE_TYPE=debug
 call :add_path %PROJECT_ROOT%\prebuilts\win32\bin
 call :add_path %PROJECT_ROOT%\prebuilts\win32\cmake\bin
 call :add_path %PROJECT_ROOT%\prebuilts\win32\python3
+call :add_path %PROJECT_ROOT%\prebuilts\win32\python3\Scripts
 call :add_path %PROJECT_ROOT%\prebuilts\win32\gcc-arm-none-eabi\bin
 call :add_path %PROJECT_ROOT%\tools
 call :add_path %PROJECT_ROOT%\tools\win32

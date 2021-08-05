@@ -3,4 +3,4 @@ python36.zip
 ..\..\..\tools
 
 # Uncomment to run site.main() automatically
-#import site
+import site
