@@ -69,8 +69,9 @@ typedef struct {
     int     year;        /* year */
 }t_time;
 /*-\NEW\WJ\2019.1.8\添加证书有效时间校验*/
-
+#ifndef IVTBL
 #define IVTBL(func) OPENAT_##func
+#endif
 
 #define PUB_TRACE(pFormat, ...)  IVTBL(print)(pFormat, ##__VA_ARGS__)
 
@@ -468,7 +469,7 @@ INT32 OPENAT_tell_file(                             /* 文件定位接口 */
                             INT32 iFd              /* 文件句柄，open_file 或 create_file 返回的有效参数 */
                       );
 
-INT32 OPENAT_rename_file(char* name, char* new);
+INT32 OPENAT_rename_file(char* name, char* new_name);
 
 INT32 OPENAT_create_file(                           /* 创建文件接口 */
                             char* pszFileNameUniLe,/* 文件全路径名称 unicode little endian*/

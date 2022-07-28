@@ -37,7 +37,7 @@ BOOL iot_i2c_close(
 UINT32 iot_i2c_write(                                 
                         E_AMOPENAT_I2C_PORT port,       
                         UINT8 salveAddr,
-                        CONST UINT8 *pRegAddr,             
+                        CONST UINT16 *pRegAddr,             
                         CONST UINT8* buf,                  
                         UINT32 bufLen                   
                    )
@@ -57,7 +57,7 @@ UINT32 iot_i2c_write(
 UINT32 iot_i2c_read(                                        
                         E_AMOPENAT_I2C_PORT port,        
                         UINT8 slaveAddr, 
-                        CONST UINT8 *pRegAddr,             
+                        CONST UINT16 *pRegAddr,             
                         UINT8* buf,                      
                         UINT32 bufLen                      
                   )
