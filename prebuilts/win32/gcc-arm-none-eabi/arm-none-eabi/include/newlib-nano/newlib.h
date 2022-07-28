@@ -33,6 +33,9 @@
    very restricted storage.  */
 #define _WANT_REENT_SMALL 1
 
+/* Verify _REENT_CHECK macros allocate memory successfully. */
+#define _REENT_CHECK_VERIFY 1
+
 /* Multibyte supported */
 /* #undef _MB_CAPABLE */
 
@@ -89,7 +92,7 @@
 #define _NANO_FORMATTED_IO 1
 
 /* Define if using retargetable functions for default lock routines.  */
-/* #undef _RETARGETABLE_LOCKING */
+#define _RETARGETABLE_LOCKING 1
 
 /* Define to use type long for time_t.  */
 /* #undef _WANT_USE_LONG_TIME_T */

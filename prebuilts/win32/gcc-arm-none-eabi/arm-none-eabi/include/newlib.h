@@ -15,7 +15,7 @@
 
 /* C99 formats support (such as %a, %zu, ...) in IO functions like
  * printf/scanf enabled */
-/* #undef _WANT_IO_C99_FORMATS */
+#define _WANT_IO_C99_FORMATS 1
 
 /* long long type support in IO functions like printf/scanf enabled */
 #define _WANT_IO_LONG_LONG 1
@@ -32,6 +32,9 @@
 /* Optional reentrant struct support.  Used mostly on platforms with
    very restricted storage.  */
 /* #undef _WANT_REENT_SMALL */
+
+/* Verify _REENT_CHECK macros allocate memory successfully. */
+#define _REENT_CHECK_VERIFY 1
 
 /* Multibyte supported */
 /* #undef _MB_CAPABLE */

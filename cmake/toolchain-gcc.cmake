@@ -26,8 +26,6 @@ if(CONFIG_CPU_ARM_CA5)
     set(abi_options -mcpu=cortex-a5 -mtune=generic-armv7-a -mthumb -mfpu=neon-vfpv4
         -mfloat-abi=hard -mno-unaligned-access)
     set(partial_link_options)
-    set(libc_file_name ${CMAKE_CURRENT_SOURCE_DIR}/components/newlib/armca5/libc.a)
-    set(libm_file_name ${CMAKE_CURRENT_SOURCE_DIR}/components/newlib/armca5/libm.a)
 endif()
 
 if(CONFIG_ENABLE_GCC_LTO)
@@ -62,5 +60,15 @@ if((${gcc_version} VERSION_GREATER 8) AND (CONFIG_CPU_ARM_CA5))
 endif()
 execute_process(COMMAND ${CMAKE_C_COMPILER} ${multilib_opions} --print-file-name libgcc.a
     OUTPUT_VARIABLE libgcc_file_name
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(COMMAND ${CMAKE_C_COMPILER} ${multilib_opions} --print-file-name libm.a
+    OUTPUT_VARIABLE libm_file_name
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(COMMAND ${CMAKE_C_COMPILER} ${multilib_opions} --print-file-name libc.a
+    OUTPUT_VARIABLE libc_file_name
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )

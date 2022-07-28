@@ -176,7 +176,6 @@ endif(CONFIG_BUILD_LUA)
 
 include_directories(components/include components/openat_inc)
 
-include_directories(components/newlib/include)
 
 function(cpp_only target file)
     add_library(${target} OBJECT ${file})
@@ -192,7 +191,7 @@ function(add_appimg target ldscript)
     add_executable(${target} ${ARGN} ${core_stub_o})
     set_target_properties(${target} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${out_hex_dir})
     target_link_libraries(${target} PRIVATE -T $<TARGET_OBJECTS:${gen_ldscript}>)
-    target_link_libraries(${target} PRIVATE -Wl,-Map=${target_map_file} -nostdlib -Wl,--gc-sections)
+    target_link_libraries(${target} PRIVATE -Wl,-Map=${target_map_file}  -Wl,--gc-sections)
 
     add_custom_command(TARGET ${target} POST_BUILD
         COMMAND ${cmd_mkappimg} $<TARGET_FILE:${target}> ${target_img_file}
@@ -401,7 +400,6 @@ add_custom_command(OUTPUT ${hex_app_file} ${hex_app_with_core_file} ${hex_delete
     COMMAND ${CMAKE_COMMAND} -E copy ${core_map_dir}/${core_name}.elf ${hex_elf_file}
     COMMAND ${CMAKE_COMMAND} -E copy ${out_hex_dir}/${target}.elf ${hex_map_dir}/app.elf
     COMMAND ${CMAKE_COMMAND} -E copy ${out_hex_dir}/${target}.map ${hex_map_dir}/app.map
-    COMMAND python3 ${gdbComGen_py} ${CMAKE_SOURCE_DIR} /hex/${target}_map/app.elf
 	DEPENDS ${pac_file} ${pac_file_with_core} 
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 	
