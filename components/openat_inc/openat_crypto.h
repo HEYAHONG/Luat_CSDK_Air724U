@@ -16,27 +16,28 @@ typedef enum E_AMOPENAT_RSA_CRYPT_MODE_TAG
     OPENAT_RSA_CRYPT_MODE_MAX
 }E_AMOPENAT_RSA_CRYPT_MODE;
 
+//-- 公钥加密
 int openat_rsa_encrypt(int nKeyMode, unsigned char *pKeyBuf, int nKeyLen,
                                              unsigned char *pPswd, int nPswdLen,
       								  int nEncryptMode,
       								  unsigned char *pInBuf, int nInLen,
       								  unsigned char *pOutBuf);
 
-
+//-- 私钥解密
 int openat_rsa_decrypt(int nKeyMode, unsigned char *pKeyBuf, int nKeyLen,
                                              unsigned char *pPswd, int nPswdLen,
       								  int nDecryptMode,
       								  unsigned char *pInBuf, int nInLen,
       								  unsigned char *pOutBuf, int *pOutLen, int nOutBufSize);
 
-
+//-- 私钥签名
 int openat_rsa_sha256_sign(int nKeyMode, unsigned char *pKeyBuf, int nKeyLen,
                                              unsigned char *pPswd, int nPswdLen,
       								  int nEncryptMode,
       								  unsigned char *pInBuf, int nInLen,
       								  unsigned char *pOutBuf);
 
-
+//-- 公钥验签
 int openat_rsa_sha256_verify(int nKeyMode, unsigned char *pKeyBuf, int nKeyLen,
                                                      unsigned char *pPswd, int nPswdLen,
       								  int nEncryptMode,

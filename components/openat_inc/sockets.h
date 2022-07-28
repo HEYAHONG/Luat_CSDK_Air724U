@@ -222,6 +222,7 @@ socket_status_t CFW_TcpipSocketGetStatus(SOCKET nSocket);
 uint32_t CFW_TcpipSocketIoctl(SOCKET nSocket, int cmd, void *argp);
 
 int32_t CFW_TcpipSocketGetMss(SOCKET nSocket);
+int32_t CFW_TcpipSocketGetRecvAvailSize(SOCKET nSocket);
 
 CFW_SNTP_CONFIG *CFW_SntpInit();
 sntp_status_t CFW_SntpStart(CFW_SNTP_CONFIG *sntpconfig);

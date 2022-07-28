@@ -23,7 +23,7 @@
 /**
  * Build identify string
  */
-#define CONFIG_BUILD_IDENTIFY "8915DM_cat1_CSDK_BT_TTS-debug-DEVEL-svn2340"
+#define CONFIG_BUILD_IDENTIFY "8915DM_cat1_CSDK_BT_TTS-debug-DEVEL-gV4001-13-g32ed82c1-dirty"
 
 /**
  * whether it is 8910 series
@@ -280,6 +280,9 @@
 /*+\new\wangjian\2020.8.24\下载lua固件和lua脚本失败*/
 /* #undef CONFIG_LUA_FLASH_OFFSET */
 /*-\new\wangjian\2020.8.24\下载lua固件和lua脚本失败*/
+/*+\NEW\cxd\2022.3.26\lua的flash区域加入保护*/
+/* #undef CONFIG_LUA_FLASH_SIZE */
+/*-\NEW\cxd\2022.3.26\lua的flash区域加入保护*/
 /**
  * reserved NOR flash size for system file system
  */
@@ -388,6 +391,16 @@
 #/*-\new\zhuwangbin\2020.5.23\add poc app*/
 
 /* #undef CONFIG_BUILD_LUA */
+
+#/*+\new\czm\2021.7.14\add CONFIG_LUA_ENCAUTH_SUPPORT*/
+/* #undef CONFIG_LUA_ENCAUTH_SUPPORT */
+#/*-\new\czm\2021.7.14\add CONFIG_LUA_ENCAUTH_SUPPORT*/
+
+#/*+\new\czm\2021.8.3\add CONFIG_LUA_RTK_SUPPORT*/
+/* #undef CONFIG_LUA_RTK_SUPPORT */
+/* #undef CONFIG_LUA_RTK_QXWZ */
+/* #undef CONFIG_LUA_RTK_XYWZ */
+#/*-\new\czm\2021.8.3\add CONFIG_LUA_RTK_SUPPORT*/
 
 #define CONFIG_BT_SUPPORT
 
@@ -962,5 +975,9 @@
  * sys_wdt feed interval
  */
 #define CONFIG_SYS_WDT_FEED_INTERVAL 5000
+
+/* #undef CONFIG_FS_MSC_FLASH_OFFSET */
+
+/* #undef CONFIG_FS_MSC_FLASH_SIZE */
 
 #endif

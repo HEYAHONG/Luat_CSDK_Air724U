@@ -141,6 +141,9 @@ typedef enum
   OPENAT_GPIO_INPUT, //as gpio or gpo
   OPENAT_GPIO_OUTPUT,
   OPENAT_GPIO_INPUT_INT,
+/*+\new\rww\2021.7.8\lua gpio 脉冲*/
+  OPENAT_GPIO_INPUT_INT2, // reserve
+/*-\new\rww\2021.7.8\lua gpio 脉冲*/
   OPENAT_GPIO_MODE_UNKNOWN
 }T_OPENAT_GPIO_MODE;
   
@@ -569,6 +572,9 @@ typedef enum
 	*/
 	OPENAT_LDO_POWER_HMICBIAS,
 	/*-\BUG3753\zhuwangbin\2020.12.4\添加audio hmic bias ldo设置*/
+  /*+\BUG6130\cxd\2022.1.25\添加flash_ib ldo设置*/
+  OPENAT_LDO_POWER_FLASHIB,
+  /*-\BUG6130\cxd\2022.1.25\添加flash_ib ldo设置*/
 	
 	OPENAT_LDO_POWER_INVALID
 }E_AMOPENAT_PM_LDO;
@@ -884,7 +890,11 @@ typedef enum
 {
     OPENAT_LCD_SPI4LINE,
     OPENAT_LCD_PARALLEL_8800,
-
+/*+\new\zhuwangbin\2021.5.19\添加MIPI LCD*/
+#ifdef AM_MIPI_LCD_SUPPORT
+	OPENAT_LCD_MIPI,
+#endif
+/*-\new\zhuwangbin\2021.5.19\添加MIPI LCD*/
     OPENAT_LCD_BUS_QTY
 }E_AMOPENAT_LCD_BUS;
 /*-\NEW\liweiqiang\2013.3.28\增加串口彩屏接口 */
@@ -971,6 +981,32 @@ typedef struct
             E_AMOPENAT_GPIO_PORT   rstPort; /* LCD复位GPIO口 */
         }parallel;
     /*-\NEW\liweiqiang\2013.10.12\增加并口彩屏cs,rst管脚配置*/
+/*+\new\zhuwangbin\2021.5.19\添加MIPI LCD*/
+#ifdef AM_MIPI_LCD_SUPPORT
+		struct{
+			void *buf0;
+			void *buf1;
+/*+\new\zhuwangbin\2021.9.2\添加MIPI CLK的配置*/
+			uint32     frequence;
+/*-\new\zhuwangbin\2021.9.2\添加MIPI CLK的配置*/
+			E_AMOPENAT_GPIO_PORT   rstPort; /* LCD复位GPIO口 */
+
+/*+\BUG:0\zwb\2021.10.22\添加mipi porch参数和continueMode配置*/
+			UINT32 porchVs;
+			UINT32 porchVbp;
+			UINT32 porchVfp;
+			UINT32 porchHs;
+			UINT32 porchHbp;
+			UINT32 porchHfp;
+			BOOL continueMode;
+
+			UINT32 cmdType;
+			UINT32 readIdCmd;
+/*-\BUG:0\zwb\2021.10.22\添加mipi porch参数和continueMode配置*/
+
+		}mipi;
+#endif
+/*-\new\zhuwangbin\2021.5.19\添加MIPI LCD*/
     }lcdItf;
 /*-\NEW\liweiqiang\2013.3.28\增加串口彩屏接口 */
 
@@ -1108,6 +1144,12 @@ typedef struct
     BOOL            noAck;          /*是否确认ack*/      //暂不支持请设置为FALSE
     BOOL            noStop;         /*是否确认发停止位*/ //暂不支持请设置为FALSE
     PI2C_MESSAGE    i2cMessage;     /*暂时不支持*/
+	/*+\NEW\cjc\2021.6.18\添加i2c 2.4k波特率*/
+    BOOL isbuad;/* 自定义波特率开关 */
+	/*-\NEW\cjc\2021.6.18\添加i2c 2.4k波特率*/
+	/*+\bug6295\liujiacheng\2022.2.26\解决首字节为低时无法进行双字节处理*/
+	BOOL            reg16bit; //true:16bit reg address;false:8bit reg address
+	/*-\bug6295\liujiacheng\2022.2.26\解决首字节为低时无法进行双字节处理*/
 }T_AMOPENAT_I2C_PARAM;
 
 
@@ -1522,6 +1564,7 @@ typedef struct
 	UINT16 count;
 	UINT16 us;
 	E_AMOPENAT_AUDIO_CHANNEL outDev;
+  UINT16 delay;
 }OPENAT_EXPA_T;
 /*-\bug2767\zhuwangbin\2020.8.5\添加外部pa设置接口*/
 /*+\BUG\wangyuan\2020.11.27\BUG_3634：在Luat版本上开发“设置mic输入通道”的接口*/
@@ -1625,6 +1668,7 @@ typedef struct
 	/*+\bug2241\zhuwangbin\2020.6.20\流录音可配置回调长度阀值*/
 	int thresholdLength; //录音数据达到一定的长度就上报
 	/*-\bug2241\zhuwangbin\2020.6.20\流录音可配置回调长度阀值*/
+	int buffLen;
 }E_AMOPENAT_RECORD_PARAM;
 
 typedef enum
@@ -1792,7 +1836,8 @@ typedef struct
     {
         struct pwm_pwt{
         	UINT16  level;
-        	UINT16 freq;
+        	UINT16  freq;
+          UINT16 	clk_div ; /*pwm的分频系数*/
         }pwt,pwl;/*注意:使用PWL实现蜂鸣器时，freq实际有效范围:0-0xff*/
         struct pwm_lpg{
         	E_OPENAT_PWM_LPG_PERIOD period;

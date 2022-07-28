@@ -187,11 +187,15 @@ typedef struct T_AMOPENAT_TFLASH_INIT_PARAM_TAG
 }AMOPENAT_TFLASH_INIT_PARAM, *PAMOPENAT_TFLASH_INIT_PARAM;
 
 /*+\NewReq WM-743\maliang\2013.3.28\[OpenAt]增加接口获取文件系统信息*/
+/*+\new\zxf\2021.07.27\增加外挂flash的空间接口*/
 typedef enum E_AMOPENAT_FILE_DEVICE_NAME_TAG
 {
     E_AMOPENAT_FS_INTERNAL,
-    E_AMOPENAT_FS_SDCARD
+    E_AMOPENAT_FS_SDCARD,
+    E_AMOPENAT_FLASH_EXTERN_PIN_LCD, // mount 外部的flash区域，使用LCD pin脚复用  V_LCD供电
+    E_AMOPENAT_FLASH_EXTERN_PIN_GPIO,// mount 外部的flash区域，使用GPIO pin脚复用 V_PAD_1V8供电
 }E_AMOPENAT_FILE_DEVICE_NAME;
+/*-\new\zxf\2021.07.27\增加外挂flash的空间接口*/
 
 typedef enum E_AMOPENAT_FLASH_TYPE_TAG
 {
@@ -236,5 +240,17 @@ typedef struct T_AMOPENAT_FSUSER_MOUNT_TAG
 #define  NV_ERR_ERASE_FLASH_TIMEOUT (-14)
 #define  NV_ERR_OPER_NOT_SUPPORT    (-15)
 /*-\BUG\AMOPENAT-74\brezen\2013.9.24\添加FLASH NV接口，用来适应掉电机制*/
+
+/*+\BUG\liyaoyao\2021.07.08\BUG5149:旧版本脚本未加密，空中升级新的加密脚本，模块会继续升级变砖*/
+INT32 OPENAT_close_file(                            /* 关闭文件接口 */
+                            INT32 iFd               /* 文件句柄，open_file 或 create_file 返回的有效参数 */
+                       );
+INT32 OPENAT_open_file(                             /* 打开文件接口 *//* 正常句柄返回值从0开始，小于0错误发生 */
+                            char* pszFileNameUniLe,/* 文件全路径名称 unicode little endian*/
+                            UINT32 iFlag,           /* 打开标志 */
+	                        UINT32 iAttr            /* 文件属性，暂时不支持，请填入0 */
+                      );
+/*-\BUG\liyaoyao\2021.07.08\BUG5149:旧版本脚本未加密，空中升级新的加密脚本，模块会继续升级变砖*/
+
 #endif /* AM_OPENAT_FS_H */
 

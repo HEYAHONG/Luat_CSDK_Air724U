@@ -14,6 +14,9 @@
 
 
 typedef VOID (*PAT_MESSAGE)(UINT8 *pData, UINT16 length);
+/*+\bug5401\zxf\2020.9.28\uart.set_rs485_oe添加可选参数,使转向时间小于100us*/
+typedef VOID (*PAT_485_MESSAGE)(uint8 id);
+/*-\bug5401\zxf\2020.9.28\uart.set_rs485_oe添加可选参数,使转向时间小于100us*/
 
 /*+\NEW\zhuwangbin\2020.4.22\添加LUA_POC项目， 通过虚拟通道兼容POC的控制*/
 typedef BOOL (*PAT_POC_MESSAGE)(char *pData, int length);

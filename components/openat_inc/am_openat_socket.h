@@ -177,6 +177,9 @@ INT32 OPENAT_socket_recvfrom(int s, void *mem, size_t len, int flags,
       struct openSocketAddr* from, INT32 *fromlen);
 void OPENAT_socket_recved(int s, UINT32 len);
 INT32 OPENAT_socket_bind(int s, struct openSocketAddr* localaddr, uint8 addrlen);
+/*+bug\ljc\2022.3.12\增加socket通讯中本地端口的配置*/
+UINT32 OPENAT_socket_getCid(int s);
+/*-bug\ljc\2022.3.12\增加socket通讯中本地端口的配置*/
 INT32 OPENAT_socket_setsockopt(int s, int level, int optname, const void *optval, int optlen);
 
 INT32 OPENAT_socket_ioctl(int s, long cmd, void *argp);

@@ -26,6 +26,7 @@
   MODULE     =  audio_codec_nv.nvm
   MODULE     =  ims_nv.nvm
   MODULE     =  customer.nvm
+  MODULE     =  RF_param.nvm
 
 # End Project Module
 

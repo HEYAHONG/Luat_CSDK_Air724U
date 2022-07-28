@@ -64,6 +64,11 @@
 /* #undef CONFIG_BUILD_LUA_FLOAT */
 /*-new\rww\2020.4.30\lua tts float空间不足*/
 
+/*+new\czm\2021.8.2\添加RTK宏控*/
+/* #undef CONFIG_BUILD_LUA_RTK_SUPPORT */
+/* #undef CONFIG_BUILD_LUA_RTK_QXWZ */
+/* #undef CONFIG_BUILD_LUA_RTK_XYWZ */
+/*-new\czm\2021.8.2\添加RTK宏控*/
 
 /**
  * Whether to reuse at uart at blue screen

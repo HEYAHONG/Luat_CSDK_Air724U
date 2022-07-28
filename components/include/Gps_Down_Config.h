@@ -16,6 +16,6 @@
 // Auto generated. Don't edit it manually!
 
 
-/* #undef CONFIG_GPS_DOWNLOAD */
+#define CONFIG_GPS_DOWNLOAD
 
 #endif

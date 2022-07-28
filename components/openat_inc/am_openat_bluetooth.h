@@ -63,6 +63,7 @@ typedef enum
     BLE_ADD_SERVICE,        ///< 添加服务
     BLE_ADD_CHARACTERISTIC, ///< 添加特征
     BLE_ADD_DESCRIPTOR,     ///< 添加描述
+    BLE_CLEAN_ALLSERVICE,   ///< 清除所有服务
     BLE_FIND_SERVICE,       ///< 发现服务
     BLE_FIND_CHARACTERISTIC,///< 发现特征
     BLE_OPEN_NOTIFICATION,  ///< 打开通知
@@ -70,6 +71,12 @@ typedef enum
     BLE_GET_ADDR,           ///< 获取蓝牙MAC地址
     BLE_SET_BEACON_DATA,     ///< 设置beacon数据
     BLE_SET_SCAN_PARAM,		///< 设置BLE扫描参数
+    BLE_ADD_WHITE_LIST,		///< 添加BLE白名单设备
+    BLE_REMOVE_WHITE_LIST,	///< 移除BLE白名单设备
+    BLE_CLEAR_WHITE_LIST,	///< 清空BLE白名单
+    BLE_READ_VALUE,	        ///< 读BLE特征value
+    BLE_SET_VALUE,	        ///< 设置BLE特征value
+
     BT_GET_ADDR,           ///< 获取蓝牙MAC地址
     BT_READ_STATE,			///< 读BT 是否使能
     BT_SET_NAME,           ///< 设置BT名称
@@ -122,6 +129,12 @@ typedef struct
 
 typedef struct 
 {
+    UINT8 	addr_type; 
+    char    *addr;
+}T_OPENAT_BLE_WHITE_LIST;
+
+typedef struct 
+{
     UINT8 		data[BLE_MAX_ADV_MUBER]; 
     UINT8       len;
 }T_OPENAT_BLE_ADV_DATA;
@@ -141,6 +154,13 @@ typedef enum
     BT_AVRCP_STATE_NEXT,
 } E_OPENAT_BT_AVRCP_STATE;
 
+typedef struct 
+{
+    T_OPENAT_BLE_UUID uuid;
+    UINT8   data[BLE_MAX_DATA_COUNT];
+    UINT8   len;
+}T_OPENAT_BLE_SET_VALUE_PARAM;
+
 typedef union {
     T_OPENAT_BLE_ADV_PARAM  *advparam;   ///< 设置BLE 广播参数
     T_OPENAT_BLE_SCAN_PARAM  *scanparam;   ///< 设置BLE 扫描参数
@@ -151,6 +171,8 @@ typedef union {
     T_OPENAT_BLE_CHARACTERISTIC_PARAM  *characteristicparam;   ///< 添加特征
     T_OPENAT_BLE_DESCRIPTOR_PARAM   *descriptorparam;   ///< 添加描述
     T_OPENAT_BLE_BEACON_DATA   *beacondata;   ///< 设置beacon数据
+    T_OPENAT_BLE_WHITE_LIST    *addrparam;  ///<添加BLE白名单设备、移除BLE白名单设备
+    T_OPENAT_BLE_SET_VALUE_PARAM  *valueparam;   ///< 添加特征value
     E_OPENAT_BT_AVRCP_STATE state; ///< 设置BT的歌曲播放状态
 }U_OPENAT_BT_IOTCTL_PARAM;
 
@@ -205,6 +227,7 @@ typedef enum{
     OPENAT_BLE_FIND_CHARACTERISTIC_IND,
     OPENAT_BLE_FIND_SERVICE_IND,
     OPENAT_BLE_FIND_CHARACTERISTIC_UUID_IND,
+    OPENAT_BLE_READ_VALUE,
     OPENAT_BLE_RECV_DATA = 100,
 }E_OPENAT_BT_EVENT;
 
@@ -215,6 +238,9 @@ BOOL OPENAT_CloseBT(void);
 BOOL OPENAT_IotctlBT(E_OPENAT_BT_CMD cmd,U_OPENAT_BT_IOTCTL_PARAM param);
 UINT8 OPENAT_GetVisibilityBT(void);
 int8 OPENAT_GetAvrcpVolBT(void);
+/*+\new\cxd\2022.3.4\支持获取音乐播放状态*/
+UINT8 OPENAT_GetAvrcpStateBT(void);
+/*-\new\cxd\2022.3.4\支持获取音乐播放状态*/
 
 BOOL OPENAT_WriteBLE(UINT16 handle,T_OPENAT_BLE_UUID uuid,char *data,UINT8 len);
 BOOL OPENAT_IotctlBLE(UINT16 handle,E_OPENAT_BT_CMD cmd,U_OPENAT_BT_IOTCTL_PARAM param);

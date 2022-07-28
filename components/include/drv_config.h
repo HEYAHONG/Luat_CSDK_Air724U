@@ -59,6 +59,13 @@
  */
 #define CONFIG_USB_CONNECT_TIMEOUT 10000
 
+/*+\bug_5529\rww\2021.10.25\在usb进到suspend状态时重新配置usb，规避windows重启后识别不到usb的问题*/
+/**
+ * usb reboot timeout
+ */
+#define CONFIG_USB_REBOOT_TIMEOUT 1000
+/*-\bug_5529\rww\2021.10.25\在usb进到suspend状态时重新配置usb，规避windows重启后识别不到usb的问题*/
+
 /**
  * usb debounce time in milliseconds before enumarating
  */
@@ -111,4 +118,14 @@
  */
 #define CONFIG_HEADSET_STACK_SIZE 16384
 #endif
+
+/*
+zwb-2021-5-19 add mipi lcd
+*/
+/* #undef CONFIG_MIPI_LCD_SUPPORT */
+
+/*
+wj-2021.7.28 add usb msc
+*/
+/* #undef CONFIG_USB_MSC_STORAGE_SUPPORT */
 #endif
