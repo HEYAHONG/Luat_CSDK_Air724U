@@ -1,3 +1,4 @@
 /hex
 out
 /start.gdb
+__pycache__
