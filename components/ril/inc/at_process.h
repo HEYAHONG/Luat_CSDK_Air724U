@@ -55,7 +55,7 @@ typedef enum {
 } ATCommandType;
 
 #ifndef IVTBL
-#define IVTBL(func) (g_s_InterfaceVtbl->func)
+#define IVTBL(func) OPENAT_##func
 #endif
 #ifndef ASSERT
 #define ASSERT(condition) IVTBL(assert)(condition, (CHAR*)__FUNCTION__, __LINE__)
