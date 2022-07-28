@@ -107,6 +107,13 @@ SECTIONS {
         __text_load_start = LOADADDR(.text);
     } > flash
 
+    .ARM.exidx ALIGNMENT:
+    {   
+        __exidx_start = .;
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        __exidx_end = .;
+    } > flash
+
     .init_array ALIGNMENT : {
         __init_array_start = .;
         KEEP(*(.init_array*))
