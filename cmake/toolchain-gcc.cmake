@@ -39,8 +39,8 @@ add_compile_options(${abi_options} -g -Os ${lto_compile_option}
     -ffunction-sections -fdata-sections
 )
 add_link_options(${abi_options} -Os ${lto_link_option})
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-exceptions -fno-rtti -fno-threadsafe-statics")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu2x")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -fno-exceptions -fno-rtti -fno-threadsafe-statics")
 
 # GNU ar will alreay create index
 set(CMAKE_C_ARCHIVE_FINISH "")
