@@ -40,7 +40,7 @@ add_compile_options(${abi_options} -g -Os ${lto_compile_option}
 )
 add_link_options(${abi_options} -Os ${lto_link_option})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu2x")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -fno-exceptions -fno-rtti -fno-threadsafe-statics")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wno-psabi -fno-rtti -fno-threadsafe-statics")
 
 # GNU ar will alreay create index
 set(CMAKE_C_ARCHIVE_FINISH "")
