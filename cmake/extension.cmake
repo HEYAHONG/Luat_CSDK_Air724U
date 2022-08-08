@@ -9,6 +9,8 @@
 # warranty that such application will be suitable for the specified use
 # without further testing or modification.
 
+find_program(PYTHON3 python3 REQUIRED)
+
 function(print arg)
     message(STATUS "${arg}: ${${arg}}")
 endfunction()
@@ -284,7 +286,7 @@ function(add_unittest target)
         pac_init_fdl(init_fdl)
 
         add_custom_command(OUTPUT ${pac_file}
-            COMMAND python3 ${pacgen_py} ${init_fdl}
+            COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
                 cfg-image -i UNITTEST -a ${CONFIG_APP_FLASH_ADDRESS}
                     -s ${CONFIG_APP_FLASH_SIZE}
                     -p ${target_img_file}
@@ -306,7 +308,7 @@ function(add_unittest target)
         pac_init_fdl(init_fdl)
 
         add_custom_command(OUTPUT ${pac_file}
-            COMMAND python3 ${pacgen_py} ${init_fdl}
+            COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
                 cfg-image -i UNITTEST -a ${CONFIG_APP_FLASH_ADDRESS}
                     -s ${CONFIG_APP_FLASH_SIZE}
                     -p ${target_img_file}
@@ -427,7 +429,7 @@ function(add_appimg_unittest target) # <sources> LINK_LIBRARIES <libs>
         pac_init_fdl(init_fdl)
 
         add_custom_command(OUTPUT ${pac_file}
-            COMMAND python3 ${pacgen_py} ${init_fdl}
+            COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
                 cfg-image -i APPIMG -a ${CONFIG_APPIMG_FLASH_ADDRESS}
                     -s ${CONFIG_APPIMG_FLASH_SIZE}
                     -p ${target_img_file}
@@ -453,7 +455,7 @@ function(add_appimg_flash_example target)
         pac_init_fdl(init_fdl)
 
         add_custom_command(OUTPUT ${pac_file}
-            COMMAND python3 ${pacgen_py} ${init_fdl}
+            COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
                 cfg-image -i APPIMG -a ${CONFIG_APPIMG_FLASH_ADDRESS}
                     -s ${CONFIG_APPIMG_FLASH_SIZE}
                     -p ${target_img_file}
@@ -479,7 +481,7 @@ function(add_appimg_file_example target)
         pac_init_fdl(init_fdl)
 
         add_custom_command(OUTPUT ${pac_file}
-            COMMAND python3 ${pacgen_py} ${init_fdl}
+            COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
                 cfg-pack-file -i APPIMG -p ${target_img_file}
                     -n ${CONFIG_APPIMG_LOAD_FILE_NAME}
                 pac-gen ${pac_file}
@@ -500,7 +502,7 @@ function(add_appimg_delete)
             pac_init_fdl(init_fdl)
 
             add_custom_command(OUTPUT ${pac_file}
-                COMMAND python3 ${pacgen_py} ${init_fdl}
+                COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
                     cfg-erase-flash -i ERASE_APPIMG
                         -a ${CONFIG_APPIMG_FLASH_ADDRESS}
                         -s ${CONFIG_APPIMG_FLASH_SIZE}
@@ -517,7 +519,7 @@ function(add_appimg_delete)
             pac_init_fdl(init_fdl)
 
             add_custom_command(OUTPUT ${pac_file}
-                COMMAND python3 ${pacgen_py} ${init_fdl}
+                COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
                     cfg-del-appimg -i DEL_APPIMG
                     pac-gen ${pac_file}
                 DEPENDS ${pacgen_py} ${pac_fdl_files}
@@ -554,7 +556,7 @@ function(rpcstubgen xml sender receiver)
         ${out_rpc_dir}/${name}_par.h)
     add_custom_command(
         OUTPUT ${gen}
-        COMMAND python3 ${tools_dir}/rpcgen.py stubgen ${xml}
+        COMMAND ${PYTHON3} ${tools_dir}/rpcgen.py stubgen ${xml}
         DEPENDS ${xml} ${tools_dir}/rpcgen.py
         WORKING_DIRECTORY ${out_rpc_dir}
     )
@@ -570,7 +572,7 @@ function(rpcdispatchgen cfile side)
     endforeach()
     add_custom_command(
         OUTPUT ${out_rpc_dir}/${cfile}
-        COMMAND python3 ${tools_dir}/rpcgen.py dispatchgen ${cfile} ${side} ${xmls}
+        COMMAND ${PYTHON3} ${tools_dir}/rpcgen.py dispatchgen ${cfile} ${side} ${xmls}
         DEPENDS ${tools_dir}/rpcgen.py ${xmls}
         WORKING_DIRECTORY ${out_rpc_dir}
     )
@@ -597,7 +599,7 @@ function(rom_for_xcpu_gen rom_elf rom_sym_rename rom_sym_global)
         COMMAND ${CMAKE_OBJCOPY} --redefine-syms ${rom_sym_rename}
             --keep-global-symbols ${rom_sym_global}
             ${rom_elf} ${rom_for_xcpu_elf}
-        COMMAND python3 ${elf2incld_py} --cross ${CROSS_COMPILE}
+        COMMAND ${PYTHON3} ${elf2incld_py} --cross ${CROSS_COMPILE}
             ${rom_for_xcpu_elf} ${rom_for_xcpu_ld}
         DEPENDS ${elf2incld_py} ${rom_elf} ${rom_sym_rename} ${rom_sym_global}
     )

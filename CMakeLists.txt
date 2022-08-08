@@ -50,15 +50,15 @@ endif()
 if(DEFINED ENV{FOTA_FLAG})
 	set(FOTA_FLAG $ENV{FOTA_FLAG})
 	set(FOTA_TYPE $ENV{FOTA_TYPE})
-	
+
 	if (NOT (${FOTA_FLAG} STREQUAL  "fota"))
 		message(FATAL_ERROR "FOTA_FLAG: ${FOTA_FLAG} != fota")
 	endif()
-	
+
 	if (NOT ((${FOTA_TYPE} STREQUAL  "app") OR (${FOTA_TYPE} STREQUAL  "core") OR (${FOTA_TYPE} STREQUAL "all")))
 		message(FATAL_ERROR "FOTA_TYPE: ${FOTA_TYPE} != app or core or all")
 	endif()
-	
+
 	message("${FOTA_FLAG}=${FOTA_TYPE}")
 endif()
 
@@ -68,7 +68,7 @@ if(DEFINED ENV{AM_MODEL})
 	if ((${AM_MODEL} STREQUAL  "iot_SDK_720U"))
 		message("core/iot_SDK_720U")
 		set(core_type 0)
-		
+
 		include(${CMAKE_SOURCE_DIR}/core/${AM_MODEL}/memd/version.cmake)
 		set(core_name CSDK_RDA8910)
 		set(core_vername CSDK_${CORE_VER}_RDA8910)
@@ -131,7 +131,8 @@ set(tools_dir ${CMAKE_CURRENT_SOURCE_DIR}/tools)
 
 set(flash_ldscript ${SOURCE_TOP_DIR}/ldscripts/app_flashimg.ld)
 set(file_ldscript ${SOURCE_TOP_DIR}/ldscripts/app_fileimg.ld)
-set(cmd_mkappimg dtools mkappimg)
+set(dtoolspath ${SOURCE_TOP_DIR}/tools/win32/dtools.exe)
+set(cmd_mkappimg ${dtoolspath} mkappimg)
 set(pacgen_py ${tools_dir}/pacgen.py)
 set(gdbComGen_py ${tools_dir}/gdbComGen.py)
 
@@ -230,10 +231,10 @@ set(hex_map_dir ${CMAKE_SOURCE_DIR}/hex/${target}_map)
 set(core_map_dir ${core_bin_dir}_map)
 set(hex_app_file ${hex_bin_dir}/${target}_APP.pac)
 if(CONFIG_APPIMG_LOAD_FILE)
-set(pac_delete_file ${out_hex_dir}/appimg_file_delete.pac) 
+set(pac_delete_file ${out_hex_dir}/appimg_file_delete.pac)
 set(hex_delete_file ${hex_bin_dir}/appimg_file_delete.pac)
 elseif(CONFIG_APPIMG_LOAD_FLASH)
-set(pac_delete_file ${out_hex_dir}/appimg_flash_delete.pac) 
+set(pac_delete_file ${out_hex_dir}/appimg_flash_delete.pac)
 set(hex_delete_file ${hex_bin_dir}/appimg_flash_delete.pac)
 endif()
 set(hex_app_with_core_file ${hex_bin_dir}/${target}.pac)
@@ -265,14 +266,16 @@ else(CONFIG_BUILD_SFFS)
 endif(CONFIG_BUILD_SFFS)
 #/*-\NEW\chenzhimin\2020.08.25\ add demo_fs sffs*/
 
+find_program(PYTHON3 python3 REQUIRED)
+
 if(CONFIG_APPIMG_LOAD_FLASH)
-    
+
     if(CONFIG_BUILD_LUA)
         add_subdirectory_if_exist(app/elua/user)
     else()
         add_subdirectory(${BUILD_TARGET} build_app)
-    endif(CONFIG_BUILD_LUA)    
-    
+    endif(CONFIG_BUILD_LUA)
+
     target_link_libraries(${target} PRIVATE api)
     #/*+\ADD\chenzhimin\2020.07.9\*/
     if(CONFIG_BUILD_APP_EN)
@@ -298,25 +301,25 @@ if(CONFIG_APPIMG_LOAD_FLASH)
          set(pac_app_8910
                 cfg-image -i APPIMG -a ${CONFIG_APPIMG_FLASH_ADDRESS} -s ${CONFIG_APPIMG_FLASH_SIZE}
                     -p ${out_hex_dir}/${target}.img
-        )   
+        )
     endif(CONFIG_BUILD_LUA)
     #/*-\ADD\chenzhimin\2020.07.8\*/
     add_custom_command(OUTPUT ${pac_file}
-        COMMAND python3 ${pacgen_py}
+        COMMAND ${PYTHON3} ${pacgen_py}
             ${init_fdl}
             ${pac_nvitem_8910}
             ${pac_app_8910}
             dep-gen --base ${BINARY_TOP_DIR} ${pac_file} ${pac_file}.d
             pac-gen ${pac_file}
         DEPFILE ${pac_file}.d
-        DEPENDS ${appimg} 
+        DEPENDS ${appimg}
         WORKING_DIRECTORY ${SOURCE_TOP_DIR}
     )
 	message(!!!!!!!!!!!!!!!!!!!!!!${pac_file_with_core})
-    
+
     # /*+\ADD\chenzhimin\2020.07.8\*/
     add_custom_command(OUTPUT ${pac_file_with_core}
-        COMMAND python3 ${pacgen_py}
+        COMMAND ${PYTHON3} ${pacgen_py}
             ${init_fdl}
             ${pac_nvitem_8910}
             cfg-phase-check
@@ -337,13 +340,13 @@ if(CONFIG_APPIMG_LOAD_FLASH)
             ${cfg_fmt_fext}
             ##############
             cfg-clear-nv
-            cfg-nv -s ${CONFIG_NVBIN_FIXED_SIZE} 
+            cfg-nv -s ${CONFIG_NVBIN_FIXED_SIZE}
                 -p ${out_hex_dir}/oldpac/${UIS8915DM_cus_name}_nvitem.bin
             # cfg-pack-cpio -i PREPACK -p ${prepack_cpio}
             dep-gen --base ${BINARY_TOP_DIR} ${pac_file_with_core} ${pac_file_with_core}.d
             pac-gen ${pac_file_with_core}
         DEPFILE ${pac_file_with_core}.d
-        DEPENDS ${appimg} 
+        DEPENDS ${appimg}
         WORKING_DIRECTORY ${SOURCE_TOP_DIR}
     )
     # /*-\ADD\chenzhimin\2020.07.8\*/
@@ -352,21 +355,21 @@ if(CONFIG_APPIMG_LOAD_FLASH)
 endif()
 
 # if(CONFIG_APPIMG_LOAD_FILE)
-    
+
 #     if(CONFIG_BUILD_LUA)
 #         add_subdirectory_if_exist(app/elua/user)
 #     else()
 #         add_subdirectory(${BUILD_TARGET} build_app)
-#     endif(CONFIG_BUILD_LUA)    
+#     endif(CONFIG_BUILD_LUA)
 
 #     target_link_libraries(${target} PRIVATE ${libc_file_name} ${libm_file_name} ${libgcc_file_name})
 #     set(pac_config ${out_hex_dir}/${target}.json)
 #     set(pac_file ${out_hex_dir}/${target}_APP.pac)
 # 	set(pac_file_with_core ${out_hex_dir}/${target}.pac)
-	
+
 #     pac_init_fdl(init_fdl ${pac_config})
 #     execute_process(
-#         COMMAND python3 ${pacgen_py} ${init_fdl}
+#         COMMAND ${PYTHON3} ${pacgen_py} ${init_fdl}
 #             cfg-pack-file -i APPIMG -p ${out_hex_dir}/${target}.img
 #                 -n ${CONFIG_APPIMG_LOAD_FILE_NAME} ${pac_config}
 #             dep-gen --base ${SOURCE_TOP_DIR} ${pac_config}
@@ -376,13 +379,13 @@ endif()
 #     )
 
 #     add_custom_command(OUTPUT ${pac_file}
-#         COMMAND python3 ${pacgen_py} pac-gen ${pac_config} ${pac_file}
+#         COMMAND ${PYTHON3} ${pacgen_py} pac-gen ${pac_config} ${pac_file}
 #         DEPENDS ${pacgen_py} ${pac_config} ${pac_dep}
 #         WORKING_DIRECTORY ${SOURCE_TOP_DIR}
 #     )
 
 # 	add_custom_command(OUTPUT ${pac_file_with_core}
-# 		COMMAND python3 ${pacgen_core_py} ${out_hex_dir}/${target}.img ${pac_file_with_core} TTS_ENABLE
+# 		COMMAND ${PYTHON3} ${pacgen_core_py} ${out_hex_dir}/${target}.img ${pac_file_with_core} TTS_ENABLE
 # 		DEPENDS ${pacgen_core_py} ${pac_dep}
 #         WORKING_DIRECTORY ${SOURCE_TOP_DIR}
 # 	)
@@ -400,13 +403,13 @@ add_custom_command(OUTPUT ${hex_app_file} ${hex_app_with_core_file} ${hex_delete
     COMMAND ${CMAKE_COMMAND} -E copy ${core_map_dir}/${core_name}.elf ${hex_elf_file}
     COMMAND ${CMAKE_COMMAND} -E copy ${out_hex_dir}/${target}.elf ${hex_map_dir}/app.elf
     COMMAND ${CMAKE_COMMAND} -E copy ${out_hex_dir}/${target}.map ${hex_map_dir}/app.map
-	DEPENDS ${pac_file} ${pac_file_with_core} 
+	DEPENDS ${pac_file} ${pac_file_with_core}
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-	
+
 ## /*+\NEW\zhuwangbin\2020.07.1\add dofta.bin */
 if(DEFINED ENV{FOTA_TYPE})
 		set(hex_fota_file ${CSDK_PRO}_${CSDK_VER}_${core_vername}.dfota.bin)
-		
+
 		if (${FOTA_TYPE} STREQUAL  "all")
 			add_custom_command(OUTPUT ${hex_fota_file}
 				COMMAND ${CMAKE_COMMAND} -E copy ${out_hex_dir}/${target}.img ${target}.img
@@ -420,12 +423,12 @@ if(DEFINED ENV{FOTA_TYPE})
 				WORKING_DIRECTORY ${hex_bin_dir})
 				add_custom_target(${target}_release ALL DEPENDS ${hex_app_file} ${hex_app_with_core_file} ${hex_map_file} ${hex_elf_file} ${hex_fota_file})
 		endif()
-		
+
 		if (${FOTA_TYPE} STREQUAL  "core")
 			add_custom_command(OUTPUT ${hex_fota_file}
 			COMMAND ${CMAKE_COMMAND} -E copy ${core_bin_dir}/${core_name}.pac  ${core_name}.pac
 			COMMAND ${CMAKE_COMMAND} -E rename ${core_name}.pac ${core_name}.bin
-			COMMAND ${CMAKE_COMMAND} -E tar "cfv" "${hex_bin_dir}.zip" "--format=zip" "${core_name}.bin" 
+			COMMAND ${CMAKE_COMMAND} -E tar "cfv" "${hex_bin_dir}.zip" "--format=zip" "${core_name}.bin"
 			COMMAND ${CMAKE_COMMAND} -E rename ${hex_bin_dir}.zip ${hex_fota_file}
 			COMMAND ${CMAKE_COMMAND} -E remove [-f] ${core_name}.bin
 			DEPENDS ${out_hex_dir}/${target}.img ${hex_app_file} ${hex_app_with_core_file}
@@ -433,12 +436,12 @@ if(DEFINED ENV{FOTA_TYPE})
 			add_custom_target(${target}_release ALL DEPENDS ${hex_app_file} ${hex_app_with_core_file} ${hex_map_file} ${hex_elf_file} ${hex_fota_file})
 
 		endif()
-		
+
 		if (${FOTA_TYPE} STREQUAL  "app")
 			add_custom_command(OUTPUT ${hex_fota_file}
 			COMMAND ${CMAKE_COMMAND} -E copy ${out_hex_dir}/${target}.img ${target}.img
 			COMMAND ${CMAKE_COMMAND} -E rename ${target}.img app.bin
-			COMMAND ${CMAKE_COMMAND} -E tar "cfv" "${hex_bin_dir}.zip" "--format=zip" "app.bin" 
+			COMMAND ${CMAKE_COMMAND} -E tar "cfv" "${hex_bin_dir}.zip" "--format=zip" "app.bin"
 			COMMAND ${CMAKE_COMMAND} -E rename ${hex_bin_dir}.zip ${hex_fota_file}
 			COMMAND ${CMAKE_COMMAND} -E remove [-f] app.bin
 			DEPENDS ${out_hex_dir}/${target}.img ${hex_app_file} ${hex_app_with_core_file}
